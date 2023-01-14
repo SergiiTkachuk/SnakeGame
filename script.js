@@ -33,3 +33,36 @@ btnScore.onclick = function () {
     window.location.reload();
   }
 };
+
+btnBorder.onclick = function () {
+  if (!fim) {
+    if (!border) {
+      border = true;
+      canvas.classList.add("border");
+      spanBorder.innerHTML = "Yes";
+    } else {
+      border = false;
+      canvas.classList.remove("border");
+      spanBorder.innerHTML = "No";
+    }
+  }
+};
+
+btnLevel.onclick = function () {
+  if (!fim) {
+    if (level < 10) {
+      level++;
+      vel = vel - 12;
+    } else if (level == 10) {
+      level = 1;
+      vel = 150;
+    }
+    if (level != 10) {
+      spanLevel.innerHTML = level;
+    } else {
+      spanLevel.innerHTML = level + "!";
+    }
+    clearInterval(jogo);
+    jogo = setInterval(iniciarJogo, vel);
+  }
+};
