@@ -98,3 +98,30 @@ function update(event) {
     if (event.keyCode == 40 && direction != "up") direction = "down";
   }
 }
+
+function iniciarJogo() {    
+
+    if (!border) {
+        // when reaching the end of the canvas, it appears on the other side (fixed bug that left the snake walking outside the canvas)
+        if(snake[0].x > 15 * box && direction !== "left") snake[0].x = 0;
+        if(snake[0].x < 0 && direction != "right") snake[0].x = 15 * box;
+        if(snake[0].y > 15 * box && direction != "up") snake[0].y = 0;
+        if(snake[0].y < 0 && direction != "down") snake[0].y = 15 * box;
+    } else {
+        //if position 0 (head) collides with the edge, stop the game
+        if(snake[0].x > 15 * box) gameOver();
+        if(snake[0].x < 0) gameOver();
+        if(snake[0].y > 15 * box) gameOver();
+        if(snake[0].y < 0) gameOver();
+    }
+    
+
+    //if position 0 (head) collides with the body, stop the game
+    for (i = 1; i < snake.length; i++){
+        if(snake[0].x == snake[i].x && snake[0].y == snake[i].y) gameOver();
+    }
+
+    criarBG();
+    criarCobrinha();
+    drawFood();
+    
