@@ -99,29 +99,60 @@ function update(event) {
   }
 }
 
-function iniciarJogo() {    
+function iniciarJogo() {
+  if (!border) {
+    // when reaching the end of the canvas, it appears on the other side (fixed bug that left the snake walking outside the canvas)
+    if (snake[0].x > 15 * box && direction !== "left") snake[0].x = 0;
+    if (snake[0].x < 0 && direction != "right") snake[0].x = 15 * box;
+    if (snake[0].y > 15 * box && direction != "up") snake[0].y = 0;
+    if (snake[0].y < 0 && direction != "down") snake[0].y = 15 * box;
+  } else {
+    //if position 0 (head) collides with the edge, stop the game
+    if (snake[0].x > 15 * box) gameOver();
+    if (snake[0].x < 0) gameOver();
+    if (snake[0].y > 15 * box) gameOver();
+    if (snake[0].y < 0) gameOver();
+  }
 
-    if (!border) {
-        // when reaching the end of the canvas, it appears on the other side (fixed bug that left the snake walking outside the canvas)
-        if(snake[0].x > 15 * box && direction !== "left") snake[0].x = 0;
-        if(snake[0].x < 0 && direction != "right") snake[0].x = 15 * box;
-        if(snake[0].y > 15 * box && direction != "up") snake[0].y = 0;
-        if(snake[0].y < 0 && direction != "down") snake[0].y = 15 * box;
-    } else {
-        //if position 0 (head) collides with the edge, stop the game
-        if(snake[0].x > 15 * box) gameOver();
-        if(snake[0].x < 0) gameOver();
-        if(snake[0].y > 15 * box) gameOver();
-        if(snake[0].y < 0) gameOver();
-    }
-    
+  //if position 0 (head) collides with the body, stop the game
+  for (i = 1; i < snake.length; i++) {
+    if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) gameOver();
+  }
 
-    //if position 0 (head) collides with the body, stop the game
-    for (i = 1; i < snake.length; i++){
-        if(snake[0].x == snake[i].x && snake[0].y == snake[i].y) gameOver();
-    }
+  criarBG();
+  criarCobrinha();
+  drawFood();
 
-    criarBG();
-    criarCobrinha();
-    drawFood();
-    
+  // snake head position
+  let snakeX = snake[0].x;
+  let snakeY = snake[0].y;
+
+  // snake move
+  if (direction == "right") snakeX += box;
+  if (direction == "left") snakeX -= box;
+  if (direction == "up") snakeY -= box;
+  if (direction == "down") snakeY += box;
+
+  // snake growth
+  if (snakeX != food.x || snakeY != food.y) {
+    /**
+     * if the snake's position is different from the food,
+     * it continues moving (removing an item from the array).
+     */
+    snake.pop();
+  } else {
+    // otherwise it doesn't remove the item from the array (increases in size) and the food shifts to another random position
+    food.x = Math.floor(Math.random() * 15 + 1) * box;
+    food.y = Math.floor(Math.random() * 15 + 1) * box;
+
+    score++;
+    spanScore.innerHTML = score;
+  }
+
+  let newHead = {
+    x: snakeX,
+    y: snakeY,
+  };
+
+  snake.unshift(newHead);
+}
