@@ -17,3 +17,19 @@ let level = 1;
 let vel = 150;
 let border = false;
 let fim = false;
+
+let btnScore = document.getElementById("btnScore");
+let btnLevel = document.getElementById("btnLevel");
+let btnBorder = document.getElementById("btnBorder");
+
+let spanLevel = document.getElementById("spanLevel");
+let spanBorder = document.getElementById("spanBorder");
+let spanScore = document.getElementById("spanScore");
+
+let gameover = document.getElementById("gameover");
+
+btnScore.onclick = function () {
+  if (fim) {
+    window.location.reload();
+  }
+};
