@@ -156,3 +156,11 @@ function iniciarJogo() {
 
   snake.unshift(newHead);
 }
+
+function gameOver() {
+  clearInterval(jogo); // faz o movimento parar
+  fim = true; // define que o jogo acabou (para não funcionarem os outros botões)
+  gameover.style.display = "flex";
+}
+
+let jogo = setInterval(iniciarJogo, vel);
